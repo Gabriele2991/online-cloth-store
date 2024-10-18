@@ -5,7 +5,11 @@ import "./checkout-item.styles.scss"
 
 const CheckoutItem = ({cartItem})=>{
     const{name, imageUrl,price,quantity}= cartItem;
-    const {addItemToCart,subtractItemFromCart,removeItemFromCart} = useContext(CartContext)
+    const {addItemToCart,subtractItemFromCart,removeItemFromCart} = useContext(CartContext);
+
+    const addItemHandler = ()=>addItemToCart(cartItem); 
+    const subtractItemHandler = ()=>subtractItemFromCart(cartItem);
+    const removeItemHandler = ()=>removeItemFromCart(cartItem);
 
     return (
         <div className="checkout-item-container">
@@ -14,12 +18,12 @@ const CheckoutItem = ({cartItem})=>{
             </div>
             <span className="name">{name}</span>
             <span className="quantity">
-                <div className="arrow" onClick={()=>subtractItemFromCart(cartItem)}>&#10094;</div>
+                <div className="arrow" onClick={subtractItemHandler}>&#10094;</div>
                 <span className="value">{quantity}</span>
-                <div className="arrow" onClick={()=>addItemToCart(cartItem)}>&#10095;</div>
+                <div className="arrow" onClick={addItemHandler}>&#10095;</div>
             </span>
             <span className="price">${price}</span>
-            <div className="remove-button" onClick={()=>removeItemFromCart(cartItem)}>&#10005;</div>
+            <div className="remove-button" onClick={removeItemHandler}>&#10005;</div>
         </div>
     )
 }
