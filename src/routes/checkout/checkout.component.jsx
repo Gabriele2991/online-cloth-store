@@ -6,7 +6,7 @@ import "./checkout.styles.scss";
 const Checkout = ()=>{
     
 
-    const { cartItems, addItemToCart, removeItemFromCart } = useContext(CartContext);
+    const { cartItems, addItemToCart, subtractItemFromCart } = useContext(CartContext);
 
     return (
         <div className="checkout-container">
@@ -29,23 +29,8 @@ const Checkout = ()=>{
             </div>
             {cartItems.map((cartItem) => 
                 <CheckoutItem key={cartItem.id} cartItem={cartItem}/>
-                // const {id, imageUrl, name, quantity, price} = cartItem;
-                // return (
-                //     <div key={id} className="checkout-item-container">
-                //         <div className="image-container">
-                //             <img src={imageUrl} alt="" />
-                //         </div>
-                //         <h2>{name}</h2>
-                //         <span>{quantity}</span>
-                //         <span>{price}</span>
-                //         <br />
-                //         <span onClick={() => { removeItemFromCart(cartItem) }}>decrement</span>
-                //         <br />
-                //         <span onClick={() => addItemToCart(cartItem)}>increment</span>
-                //     </div>
-                // )
-                )}
-            <span className="total">Total : 0</span>
+            )}
+            <span className="total">Total: 0 </span>
         </div>
     )
 
