@@ -15,7 +15,6 @@ import "./navigation.styles.scss";
 const NavigationBar = ()=>{
     const {currentUser}= useContext(UserContext);
     const {isCartOpen}= useContext(CartContext);
-    // console.log("Current user: ",currentUser);
 
     const signOutHandler = async()=>{
         await signOutUser();
