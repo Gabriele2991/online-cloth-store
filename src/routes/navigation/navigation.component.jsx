@@ -27,12 +27,12 @@ const NavigationBar = ()=>{
                     <CrwnLogo className="logo"/>
                 </LogoContainer>
                 <NavLinks>
-                    <NavLink>
+                    <NavLink to="/shop">
                         SHOP
                     </NavLink>
                     <CartIcon />
                     {
-                        currentUser ? (<span className="nav-link" onClick={signOutHandler}>SIGN OUT</span>
+                        currentUser ? (<NavLink as="span" onClick={signOutHandler}>SIGN OUT</NavLink>
                         ) : (
                         <NavLink to="/auth">
                             SIGN IN
