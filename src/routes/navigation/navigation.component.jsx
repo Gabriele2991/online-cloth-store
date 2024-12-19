@@ -27,10 +27,7 @@ const NavigationBar = ()=>{
                     <CrwnLogo className="logo"/>
                 </LogoContainer>
                 <NavLinks>
-                    <NavLink to="/shop">
-                        SHOP
-                    </NavLink>
-                    <CartIcon />
+                    <NavLink to="/shop">SHOP</NavLink>
                     {
                         currentUser ? (<NavLink as="span" onClick={signOutHandler}>SIGN OUT</NavLink>
                         ) : (
@@ -38,6 +35,7 @@ const NavigationBar = ()=>{
                             SIGN IN
                         </NavLink>
                     )}
+                    <CartIcon />
                 </NavLinks>
                 {isCartOpen && <CartDropdown />}
             </NavigationContainer>
