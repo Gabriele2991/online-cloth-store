@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect} from "react";
+import { createContext, useState, useEffect, useReducer} from "react";
 
 const addCartItem = (cartItems, productToAdd)=>{
 
@@ -73,35 +73,46 @@ const cartReducer = (state, action)=>{
 
 export const CartProvider =({children})=>{
 
-    const [isCartOpen, setIsCartOpen] = useState(false);
-    const [cartItems, setCartItems] = useState([]);
-    const [cartCount, setCartCount] = useState(0);
-    const [cartTotal, setCartTotal] = useState(0);
+    // const [isCartOpen, setIsCartOpen] = useState(false);
+    // const [cartItems, setCartItems] = useState([]);
+    // const [cartCount, setCartCount] = useState(0);
+    // const [cartTotal, setCartTotal] = useState(0);
 
-    useEffect(()=>{
-        const newCartCount = cartItems.reduce((total, cartItem)=>total+cartItem.quantity, 0);
-        setCartCount(newCartCount);
-    }, [cartItems]);   
+    const [{isCartOpen, cartItems,cartCount, cartTotal},dispatch] = useReducer(cartReducer,INITIAL_STATE);
 
-    useEffect(()=>{
-        const newCartTotal = cartItems.reduce((total, cartItem)=>total+(cartItem.quantity*cartItem.price), 0);
-        setCartTotal(newCartTotal);
-    }, [cartItems]);
+    // useEffect(()=>{
+    //     const newCartCount = cartItems.reduce((total, cartItem)=>total+cartItem.quantity, 0);
+    //     setCartCount(newCartCount);
+    // }, [cartItems]);   
+
+    // useEffect(()=>{
+    //     const newCartTotal = cartItems.reduce((total, cartItem)=>total+(cartItem.quantity*cartItem.price), 0);
+    //     setCartTotal(newCartTotal);
+    // }, [cartItems]);
 
     const updateCartItemsReducer = (newCartItems)=>{
-        /*
-        dispatch new action with payload = {
-            newCartItems,
-            newCartTotal,
-            newCartCount
-        }
-        */
+        const newCartCount = newCartItems.reduce(
+            (total, cartItem)=>total+cartItem.quantity, 0
+        );
+
+        const newCartTotal = newCartItems.reduce(
+            (total, cartItem)=>total+(cartItem.quantity*cartItem.price), 0
+        );
+        
+       dispatch({type:"SET_CART_ITEMS",
+            payload:{
+            cartItems: newCartItems,
+            cartCount: newCartCount,
+            cartTotal: newCartTotal
+            }
+        })
     }
 
     const addItemToCart = (productToAdd) =>{
         const newCartItems = addCartItem(cartItems, productToAdd);
         updateCartItemsReducer(newCartItems);
     }
+
     const subtractItemFromCart = (productToSubtract)=>{
         const newCartItems = subtractCartItem(cartItems, productToSubtract);
         updateCartItemsReducer(newCartItems);
@@ -112,9 +123,12 @@ export const CartProvider =({children})=>{
         updateCartItemsReducer(newCartItems);
     }
     
+    const setIsCartOpen = ()=>{
+
+    }
     const value = {
         isCartOpen, 
-        setIsCartOpen, 
+        setIsCartOpen:()=>{}, 
         addItemToCart, 
         subtractItemFromCart, 
         removeItemFromCart, 
