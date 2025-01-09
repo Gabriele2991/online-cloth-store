@@ -47,6 +47,11 @@ export const CartContext = createContext({
     removeItemFromCart:()=>{},
 })
 
+const CART_ACTION_TYPES = {
+    SET_CART_ITEMS:"SET_CART_ITEMS",
+    SET_IS_CART_OPEN : "SET_IS_CART_OPEN"
+}
+
 const INITIAL_STATE = {
     isCartOpen: false,
     cartItems:[],
@@ -58,12 +63,16 @@ const cartReducer = (state, action)=>{
     const {type,payload} = action;
 
     switch (type) {
-        case "SET_CART_ITEMS":
+        case CART_ACTION_TYPES.SET_CART_ITEMS:
             return{
                 ...state,
                 ...payload
-            }
-    
+            };
+        case CART_ACTION_TYPES.SET_IS_CART_OPEN:
+            return{
+                ...state,
+                isCartOpen:payload
+            };
         default:
             throw new Error(`Unhandled type ${type} in cartReducer in cartContext`)
     }
@@ -99,11 +108,12 @@ export const CartProvider =({children})=>{
             (total, cartItem)=>total+(cartItem.quantity*cartItem.price), 0
         );
         
-       dispatch({type:"SET_CART_ITEMS",
+       dispatch({
+            type:CART_ACTION_TYPES.SET_CART_ITEMS,
             payload:{
-            cartItems: newCartItems,
-            cartCount: newCartCount,
-            cartTotal: newCartTotal
+                cartItems: newCartItems,
+                cartCount: newCartCount,
+                cartTotal: newCartTotal
             }
         })
     }
@@ -123,12 +133,17 @@ export const CartProvider =({children})=>{
         updateCartItemsReducer(newCartItems);
     }
     
-    const setIsCartOpen = ()=>{
-
+    const setIsCartOpen = (bool)=>{
+        dispatch({
+            type:CART_ACTION_TYPES.SET_IS_CART_OPEN,
+            payload:bool
+        })
     }
+
+
     const value = {
         isCartOpen, 
-        setIsCartOpen:()=>{}, 
+        setIsCartOpen, 
         addItemToCart, 
         subtractItemFromCart, 
         removeItemFromCart, 
